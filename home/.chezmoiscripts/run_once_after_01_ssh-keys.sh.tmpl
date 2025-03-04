@@ -1,0 +1,13 @@
+#!/bin/bash
+
+{{ if .ssh.includePersonal -}}
+if ! ssh-add -l | grep -q "$(ssh-keygen -lf ~/.ssh/id_rsa | awk '{print $2}')"; then
+    ssh-add --apple-use-keychain ~/.ssh/id_rsa
+fi
+{{ end -}}
+
+{{ if .ssh.includeWork -}}
+if ! ssh-add -l | grep -q "$(ssh-keygen -lf ~/.ssh/id_rsa.work | awk '{print $2}')"; then
+    ssh-add --apple-use-keychain ~/.ssh/id_rsa.work
+fi
+{{ end -}}

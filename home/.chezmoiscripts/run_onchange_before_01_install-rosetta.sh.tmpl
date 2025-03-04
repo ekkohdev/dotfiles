@@ -1,0 +1,5 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.arch "arm64" }}
+softwareupdate --install-rosetta --agree-to-license
+{{ end }}

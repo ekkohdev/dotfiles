@@ -1,0 +1,15 @@
+Include ~/.orbstack/ssh/config
+
+{{ if .ssh.includePersonal -}}
+Host *
+  UseKeychain yes
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_rsa
+{{ end -}}
+
+{{ if .ssh.includeWork }}
+Host gitlab.com
+  UseKeychain yes
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_rsa.work
+{{ end -}}

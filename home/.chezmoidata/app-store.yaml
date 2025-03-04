@@ -1,0 +1,18 @@
+mas:
+  apps:
+    - name: Amphetamine
+      id: 937984704
+    - name: ColorSlurp
+      id: 1287239339
+    - name: Dark Reader for Safari
+      id: 1438243180
+    - name: Key Codes
+      id: 414568915
+    - name: PDFgear
+      id: 6469021132
+    - name: Slack
+      id: 803453959
+    - name: The Unarchiver
+      id: 425424353
+    - name: Xcode
+      id: 497799835

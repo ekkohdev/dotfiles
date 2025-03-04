@@ -1,0 +1,61 @@
+{{- $isWorkDevice := promptBoolOnce . "isWorkDevice" "Work Device?" -}}
+{{- $isPersonalDevice := not $isWorkDevice -}}
+
+{{- $personalGitEmail := "" -}}
+{{- $personalGitRoot := "" -}}
+{{- $workGitEmail := "" -}}
+{{- $workGitRoot := "" -}}
+
+{{- $includePersonalSSH := false -}}
+{{- $includeWorkSSH := false -}}
+
+{{- $includePersonalGPG := false -}}
+{{- $includeWorkGPG := false -}}
+
+{{- if not $isWorkDevice -}}
+{{-   $personalGitEmail = promptStringOnce . "personalGitEmail" "Personal Git Email" -}}
+{{-   $includeWorkGit := promptBoolOnce . "includeWorkGit" "Include Work Git Root Directory?" -}}
+{{-   if $includeWorkGit -}}
+{{-     $workGitEmail = promptStringOnce . "workGitEmail" "Work Git Email" -}}
+{{-     $workGitRoot = promptStringOnce . "workGitRoot" "Work Git Root Directory" -}}
+{{-     $includeWorkGPG = true -}}
+{{-   end -}}
+{{-   $includeWorkSSH = promptBoolOnce . "includeWorkSSH" "Include Work SSH Keys?" -}}
+{{- end -}}
+
+{{- if $isWorkDevice }}
+{{-   $workGitEmail = promptStringOnce . "workGitEmail" "Work Git Email" -}}
+{{-   $includePersonalGit := promptBoolOnce . "includePersonalGit" "Include Personal Git Root Directory?" -}}
+{{-   if $includePersonalGit -}}
+{{-     $personalGitEmail = promptStringOnce . "personalGitEmail" "Personal Git Email" -}}
+{{-     $personalGitRoot = promptStringOnce . "personalGitRoot" "Personal Git Root Directory" -}}
+{{-     $includePersonalGPG = true -}}
+{{-   end -}}
+{{-   $includePersonalSSH = promptBoolOnce . "includePersonalSSH" "Include Personal SSH Keys?" -}}
+{{ end }}
+
+diff:
+  command: code
+  args:
+    - --wait
+    - --diff
+  exclude:
+    - scripts
+
+data:
+  device:
+    isPersonal: {{ $isPersonalDevice }}
+    isWork: {{ $isWorkDevice }}
+  ssh:
+    includePersonal: {{ $includePersonalSSH }}
+    includeWork: {{ $includeWorkSSH }}
+  gpg:
+    includePersonal: {{ $includePersonalGPG }}
+    includeWork: {{ $includeWorkGPG }}
+  git:
+    personal:
+      email: {{ $personalGitEmail }}
+      root: {{ $personalGitRoot | quote }}
+    work:
+      email: {{ $workGitEmail }}
+      root: {{ $workGitRoot | quote }}

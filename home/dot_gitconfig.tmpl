@@ -1,0 +1,32 @@
+[user]
+  name = Chris Simmons
+
+[init]
+  defaultBranch = main
+
+[commit]
+  gpgsign = true
+
+[tag]
+  gpgsign = true
+
+[credential]
+  helper = /usr/local/share/gcm-core/git-credential-manager
+
+{{ if .device.isPersonal -}}
+[include]
+  path = .gitconfig.ekkohdev
+{{ if .git.work.root }}
+[includeIf "gitdir/i:{{- .git.work.root -}}/"]
+  path = .gitconfig.work
+{{ end  -}}
+{{ end  -}}
+
+{{ if .device.isWork -}}
+[include]
+  path = .gitconfig.work
+{{ if .git.personal.root }}
+[includeIf "gitdir/i:{{- .git.personal.root -}}/"]
+  path = .gitconfig.ekkohdev
+{{ end -}}
+{{ end -}}

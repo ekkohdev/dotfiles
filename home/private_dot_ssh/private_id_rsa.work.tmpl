@@ -1,0 +1,7 @@
+{{ if .ssh.includeWork -}}
+{{   range (onepassword "eb6ddni47j5gvqtf7hpuhew2wy").fields -}}
+{{     if eq .id "private_key" -}}
+{{       .ssh_formats.openssh.value -}}
+{{     end -}}
+{{   end -}}
+{{ end -}}

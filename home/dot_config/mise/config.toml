@@ -1,0 +1,10 @@
+## mise-en-place
+## https://mise.jdx.dev/about.html
+
+[tools] # https://mise.jdx.dev/dev-tools/
+
+node = "22"
+python = "3.12"
+
+"aqua:pulumi/pulumi" = "latest"
+"aqua:go-task/task" = "latest"

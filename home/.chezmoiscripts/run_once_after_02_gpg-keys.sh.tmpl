@@ -1,0 +1,17 @@
+#!/bin/bash
+
+{{ if .gpg.includePersonal -}}
+if ! gpg --list-secret-keys | grep -q {{ onepasswordRead "op://oikrltcl5tvkas7pfci5l2etjq/wwjdc7l26bcnbhwoh553voudym/key id" "X2DONHUBNJFTBNQJZLAPMTB6CU" }}; then
+  gpg --import <(echo "{{- onepasswordDocument "wwjdc7l26bcnbhwoh553voudym" | toString -}}")
+else
+  echo "GPG key already imported"
+fi
+{{ end -}}
+
+{{ if .gpg.includeWork -}}
+if ! gpg --list-secret-keys | grep -q {{ onepasswordRead "op://oikrltcl5tvkas7pfci5l2etjq/tjjz5q24uzk4sjxvdtjk7zv7vi/key id" "X2DONHUBNJFTBNQJZLAPMTB6CU" }}; then
+  gpg --import <(echo "{{- onepasswordDocument "tjjz5q24uzk4sjxvdtjk7zv7vi" | toString -}}")
+else
+  echo "GPG key already imported"
+fi
+{{ end -}}

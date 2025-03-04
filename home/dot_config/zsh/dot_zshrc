@@ -1,0 +1,208 @@
+#-------------------#
+#  Start Profiling  #
+#-------------------#
+
+#zmodload zsh/zprof
+
+#-----------#
+#  History  #
+#-----------#
+
+export HISTFILE=$ZDOTDIR/.zhistory
+export HISTSIZE=1000000000
+export SAVEHIST=500000000
+
+setopt EXTENDED_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS 
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+
+export HSTR_PROMPT="history$ "
+export HSTR_CONFIG=hicolor,no-confirm,raw-history-view,hide-basic-help,help-on-opposite-side
+alias hh=hstr
+
+bindkey -s "\C-r" "\C-a hstr -- \C-j"
+
+#-----------------#
+#  Shell Options  #
+#-----------------#
+
+setopt autocd
+
+#----------------#
+#  Key Bindings  #
+#----------------#
+
+bindkey '^[[Z' reverse-menu-complete  # shift+tab
+bindkey "^[[1;3C" forward-word   # alt+right
+bindkey "^[[1;3D" backward-word  # alt+left
+bindkey "^[[1;9C" end-of-line  # cmd+left
+bindkey "^[[1;9D" beginning-of-line  # cmd+right
+
+#-----------------------#
+#  Syntax Highlighting  #
+#-----------------------#
+
+source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+#------------#
+#  Homebrew  #
+#------------#
+
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+export HOMEBREW_NO_ANALYTICS=1
+
+#---------#
+#  GnuPG  #
+#---------#
+
+export GPG_TTY=$TTY
+
+#-----------#
+#  VS Code  #
+#-----------#
+
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+#-----------#
+#  Node.js  #
+#-----------#
+
+alias ncu='ncu -i'
+alias clean-node-keys='gpg --delete-keys 770F7A9A5AE15600 8BEAB4DFCF555EF4 C43CEC45C17AB93C 97B01419BD92F80A 1F10027AF002F8B0 21D900FFDB233756 C77ABFA00DDBF2B7 27F5E38D5B0A215F '
+
+#------#
+#  Go  #
+#------#
+
+export PATH=$PATH:$HOME/go/bin
+
+alias gcu='go list -u -m -json all | go-mod-outdated -update'
+alias gcud='go list -u -m -json all | go-mod-outdated -direct -update'
+
+#--------------#
+#  Kubernetes  #
+#--------------#
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+alias krew='kubectl krew'
+
+# if [ -d ~/.kube/configs ]; then
+#   export KUBECONFIG=~/.kube/config$(find ~/.kube/configs -type f 2>/dev/null | xargs -I % echo -n ":%")
+# fi
+
+export KUBE_EDITOR=nano
+#export KUBECONFIG=""
+
+# Aliases
+alias k='kubectl'
+alias ksys='kubectl --namespace kube-system'
+
+INSTALLATION_PATH=$(brew --prefix switch) && source $INSTALLATION_PATH/switch.sh
+source /opt/kubeswitch/cleanup_handler_zsh.sh
+
+alias ktx='switch'
+alias kns='switch ns'
+
+alias kcap='kubectl resource-capacity'
+
+kall(){
+    kubectl ${@:1} -A
+}
+
+#----------#
+#  Python  #
+#----------#
+
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
+
+#----------#
+#  Pulumi  #
+#----------#
+
+alias p='pulumi'
+
+export PULUMI_SKIP_UPDATE_CHECK=true
+export PULUMI_K8S_CLIENT_BURST=120
+export PULUMI_K8S_CLIENT_QPS=5
+
+#-----------------#
+#  Shell Aliases  #
+#-----------------#
+
+alias sudo="sudo "
+
+alias ...='../..'
+alias ....='../../..'
+
+alias cls='clear'
+alias rmd="rm -rf"
+
+alias ls='eza --long --classify --colour=always --icons=always --group-directories-first --binary --group --git'
+alias lsa="ls -a"
+
+alias sshk="kitty +kitten ssh"
+
+alias grep="ggrep"
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+#----------------------#
+#  Init & Completions  #
+#----------------------#--------------------------------------#
+#  Put completions here: /usr/local/share/zsh/site-functions  #
+#-------------------------------------------------------------#
+
+fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
+
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose true
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+
+complete -C '/usr/local/bin/aws_completer' aws
+
+source /opt/kubeswitch/_switch.bash
+
+update-completions(){
+  golangci-lint completion zsh > /usr/local/share/zsh/site-functions/_golangci-lint.zsh
+  pulumi gen-completion zsh > /usr/local/share/zsh/site-functions/_pulumi.zsh
+  pulumictl completion zsh > /usr/local/share/zsh/site-functions/_pulumictl.zsh
+  task --completion zsh  > /usr/local/share/zsh/site-functions/_task.zsh
+}
+
+#--------#
+#  Mise  #
+#--------#
+
+export MISE_NODE_DEFAULT_PACKAGES_FILE=$HOME/.config/mise/.default-npm-packages
+eval "$(mise activate zsh)"
+
+#------------#
+#  Starship  #
+#------------#
+
+export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml
+eval "$(starship init zsh)"
+
+#-----------------#
+#  End Profiling  #
+#-----------------#
+
+#zprof

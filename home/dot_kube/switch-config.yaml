@@ -1,0 +1,13 @@
+kind: SwitchConfig
+version: v1alpha1
+kubeconfigStores:
+  - kind: filesystem
+    kubeconfigName: "*"
+    showPrefix: false
+    paths:
+      - ~/.kube/configs/
+  - kind: filesystem
+    kubeconfigName: "config.yml"
+    showPrefix: false
+    paths:
+      - ~/.orbstack/k8s/

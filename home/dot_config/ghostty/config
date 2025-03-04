@@ -1,0 +1,24 @@
+## Ghostty Configuration
+
+# The syntax is "key = value". Whitespace around equals doesn't matter.
+# Blank lines are ignored. Lines starting with # are comments.
+# Empty values reset the configuration to the default value.
+
+## Fonts
+font-family = SF Mono
+font-size = 12
+
+## Theme
+theme = catppuccin-mocha
+
+## Appearance
+macos-titlebar-style = transparent
+macos-titlebar-proxy-icon = hidden
+window-padding-x = 8
+window-padding-y = 8,12
+window-step-resize = true
+window-height = 50
+window-width = 140
+
+## Shell Integration
+shell-integration-features = cursor,sudo,title

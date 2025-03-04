@@ -1,0 +1,21 @@
+#!/bin/bash
+
+brew bundle install --no-lock --file=/dev/stdin <<EOF
+
+{{ range .homebrew.taps -}}
+tap {{ . | quote }}
+{{ end -}}
+
+{{ range .homebrew.brews -}}
+brew {{ . | quote }}
+{{ end -}}
+
+{{ range .homebrew.casks -}}
+cask {{ . | quote }}
+{{ end -}}
+
+{{ range .mas.apps -}}
+mas {{ .name | quote }}, id: {{ .id }}
+{{ end -}}
+
+EOF
