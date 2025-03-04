@@ -4,6 +4,13 @@
 
 #zmodload zsh/zprof
 
+#--------------------#
+#  Completions Init  #
+#--------------------#
+
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+
 #-----------#
 #  History  #
 #-----------#
@@ -15,7 +22,7 @@ export SAVEHIST=500000000
 setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_SPACE
-setopt HIST_REDUCE_BLANKS 
+setopt HIST_REDUCE_BLANKS
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
@@ -106,8 +113,7 @@ export KUBE_EDITOR=nano
 alias k='kubectl'
 alias ksys='kubectl --namespace kube-system'
 
-INSTALLATION_PATH=$(brew --prefix switch) && source $INSTALLATION_PATH/switch.sh
-source /opt/kubeswitch/cleanup_handler_zsh.sh
+source <(switcher init zsh)
 
 alias ktx='switch'
 alias kns='switch ns'
@@ -157,18 +163,15 @@ alias grep="ggrep"
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
-#----------------------#
-#  Init & Completions  #
-#----------------------#--------------------------------------#
+#---------------#
+#  Completions  #
+#---------------#---------------------------------------------#
 #  Put completions here: /usr/local/share/zsh/site-functions  #
 #-------------------------------------------------------------#
 
 fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
 
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' verbose true
