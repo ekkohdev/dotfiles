@@ -55,8 +55,6 @@ homebrew:
     - font-hack
     - font-sf-mono
     - font-symbols-only-nerd-font
-    - font-ubuntu
-    - font-ubuntu-mono
     - ghostty
     - git-credential-manager
     - iina
